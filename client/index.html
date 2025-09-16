@@ -1,0 +1,851 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta
+      name="viewport"
+      content="width=device-width, initial-scale=1.0"
+    />
+    <title>Organ Donation System dApp</title>
+    <link rel="stylesheet" href="style.css" />
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.3.0/css/bootstrap.min.css" rel="stylesheet">
+  </head>
+
+  <body>
+    <nav id="header" class="navbar navbar-expand-lg navbar-dark bg-primary">
+      <div class="container-fluid">
+        <a class="navbar-brand" href="#">🫀 Organ Donation System</a>
+        <div id="account" class="d-flex text-white"></div>
+      </div>
+    </nav>
+
+    <div class="container mt-4">
+      <!-- Status Display -->
+      <div class="row mb-4">
+        <div class="col-12">
+          <div id="status" class="alert alert-info">
+            Please connect your wallet to get started.
+          </div>
+        </div>
+      </div>
+
+      <!-- Navigation Tabs -->
+      <ul class="nav nav-tabs" id="mainTabs" role="tablist">
+        <li class="nav-item" role="presentation">
+          <button class="nav-link active" id="donor-tab" data-bs-toggle="tab" data-bs-target="#donor-section" type="button" role="tab">
+            Donor Management
+          </button>
+        </li>
+        <li class="nav-item" role="presentation">
+          <button class="nav-link" id="recipient-tab" data-bs-toggle="tab" data-bs-target="#recipient-section" type="button" role="tab">
+            Recipient Management
+          </button>
+        </li>
+        <li class="nav-item" role="presentation">
+          <button class="nav-link" id="hospital-tab" data-bs-toggle="tab" data-bs-target="#hospital-section" type="button" role="tab">
+            Hospital Management
+          </button>
+        </li>
+        <li class="nav-item" role="presentation">
+          <button class="nav-link" id="organ-nft-tab" data-bs-toggle="tab" data-bs-target="#organ-nft-section" type="button" role="tab">
+            Organ NFT Management
+          </button>
+        </li>
+        <li class="nav-item" role="presentation">
+          <button class="nav-link" id="organ-quality-tab" data-bs-toggle="tab" data-bs-target="#organ-quality-section" type="button" role="tab">
+            Organ Quality Management
+          </button>
+        </li>
+      </ul>
+
+      <!-- Tab Content -->
+      <div class="tab-content mt-4" id="mainTabContent">
+        <!-- Donor Section -->
+        <div class="tab-pane fade show active" id="donor-section" role="tabpanel">
+          <div class="row">
+            <!-- Register Donor Form -->
+            <div class="col-md-6">
+              <div class="card">
+                <div class="card-header">
+                  <h5>Register New Donor</h5>
+                </div>
+                <div class="card-body">
+                  <form id="donorForm">
+                    <div class="mb-3">
+                      <label for="donorAddress" class="form-label">Donor Address</label>
+                      <input type="text" class="form-control" id="donorAddress" placeholder="0x..." required>
+                    </div>
+                    <div class="mb-3">
+                      <label for="donorName" class="form-label">Name</label>
+                      <input type="text" class="form-control" id="donorName" required>
+                    </div>
+                    <div class="mb-3">
+                      <label for="donorAge" class="form-label">Age</label>
+                      <input type="number" class="form-control" id="donorAge" min="18" max="100" required>
+                    </div>
+                    <div class="mb-3">
+                      <label for="donorBloodType" class="form-label">Blood Type</label>
+                      <select class="form-control" id="donorBloodType" required>
+                        <option value="">Select Blood Type</option>
+                        <option value="A+">A+</option>
+                        <option value="A-">A-</option>
+                        <option value="B+">B+</option>
+                        <option value="B-">B-</option>
+                        <option value="AB+">AB+</option>
+                        <option value="AB-">AB-</option>
+                        <option value="O+">O+</option>
+                        <option value="O-">O-</option>
+                      </select>
+                    </div>
+                    <div class="mb-3">
+                      <label for="donorMedicalHistory" class="form-label">Medical History Hash</label>
+                      <input type="text" class="form-control" id="donorMedicalHistory" placeholder="IPFS hash or medical record reference">
+                    </div>
+                    <div class="mb-3">
+                      <label class="form-label">Donation Preferences</label>
+                      <div class="form-check">
+                        <input class="form-check-input" type="checkbox" id="donorHeart">
+                        <label class="form-check-label" for="donorHeart">Heart</label>
+                      </div>
+                      <div class="form-check">
+                        <input class="form-check-input" type="checkbox" id="donorLiver">
+                        <label class="form-check-label" for="donorLiver">Liver</label>
+                      </div>
+                      <div class="form-check">
+                        <input class="form-check-input" type="checkbox" id="donorKidneys">
+                        <label class="form-check-label" for="donorKidneys">Kidneys</label>
+                      </div>
+                    </div>
+                    <button type="submit" class="btn btn-primary">Register Donor</button>
+                  </form>
+                </div>
+              </div>
+            </div>
+
+            <!-- Donor Actions -->
+            <div class="col-md-6">
+              <div class="card">
+                <div class="card-header">
+                  <h5>Donor Actions</h5>
+                </div>
+                <div class="card-body">
+                  <!-- Get Donor Info -->
+                  <div class="mb-3">
+                    <label for="getDonorAddress" class="form-label">Get Donor Info</label>
+                    <div class="input-group">
+                      <input type="text" class="form-control" id="getDonorAddress" placeholder="Donor address">
+                      <button class="btn btn-outline-secondary" type="button" id="getDonorBtn">Get Info</button>
+                    </div>
+                  </div>
+
+                  <!-- Update Status (Admin) -->
+                  <div class="mb-3">
+                    <label for="updateDonorAddress" class="form-label">Update Donor Status (Admin Only)</label>
+                    <div class="input-group mb-2">
+                      <input type="text" class="form-control" id="updateDonorAddress" placeholder="Donor address">
+                    </div>
+                    <div class="input-group">
+                      <select class="form-control" id="donorStatusSelect">
+                        <option value="0">Active</option>
+                        <option value="1">Deactivated</option>
+                        <option value="2">Matched</option>
+                        <option value="3">Deceased</option>
+                      </select>
+                      <button class="btn btn-warning" type="button" id="updateDonorStatusBtn">Update Status</button>
+                    </div>
+                  </div>
+
+                  <!-- Deactivate Donor -->
+                  <div class="mb-3">
+                    <label for="deactivateDonorAddress" class="form-label">Deactivate Donor (Admin Only)</label>
+                    <div class="input-group">
+                      <input type="text" class="form-control" id="deactivateDonorAddress" placeholder="Donor address">
+                      <button class="btn btn-danger" type="button" id="deactivateDonorBtn">Deactivate</button>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!-- Donor Info Display -->
+          <div class="row mt-4">
+            <div class="col-12">
+              <div id="donorInfo" class="card" style="display: none;">
+                <div class="card-header">
+                  <h5>Donor Information</h5>
+                </div>
+                <div class="card-body" id="donorInfoContent">
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Recipient Section -->
+        <div class="tab-pane fade" id="recipient-section" role="tabpanel">
+          <div class="row">
+            <!-- Register Recipient Form -->
+            <div class="col-md-6">
+              <div class="card">
+                <div class="card-header">
+                  <h5>Register New Recipient</h5>
+                </div>
+                <div class="card-body">
+                  <form id="recipientForm">
+                    <div class="mb-3">
+                      <label for="recipientAddress" class="form-label">Recipient Address</label>
+                      <input type="text" class="form-control" id="recipientAddress" placeholder="0x..." required>
+                    </div>
+                    <div class="mb-3">
+                      <label for="recipientName" class="form-label">Name</label>
+                      <input type="text" class="form-control" id="recipientName" required>
+                    </div>
+                    <div class="mb-3">
+                      <label for="recipientAge" class="form-label">Age</label>
+                      <input type="number" class="form-control" id="recipientAge" min="1" max="120" required>
+                    </div>
+                    <div class="mb-3">
+                      <label for="recipientBloodType" class="form-label">Blood Type</label>
+                      <select class="form-control" id="recipientBloodType" required>
+                        <option value="">Select Blood Type</option>
+                        <option value="A+">A+</option>
+                        <option value="A-">A-</option>
+                        <option value="B+">B+</option>
+                        <option value="B-">B-</option>
+                        <option value="AB+">AB+</option>
+                        <option value="AB-">AB-</option>
+                        <option value="O+">O+</option>
+                        <option value="O-">O-</option>
+                      </select>
+                    </div>
+                    <div class="mb-3">
+                      <label for="recipientMedicalHistory" class="form-label">Medical History Hash</label>
+                      <input type="text" class="form-control" id="recipientMedicalHistory" placeholder="IPFS hash or medical record reference">
+                    </div>
+                    <div class="mb-3">
+                      <label class="form-label">Location</label>
+                      <div class="row">
+                        <div class="col-md-6">
+                          <input type="text" class="form-control mb-2" id="recipientCity" placeholder="City" required>
+                        </div>
+                        <div class="col-md-6">
+                          <input type="text" class="form-control mb-2" id="recipientCountry" placeholder="Country" required>
+                        </div>
+                      </div>
+                      <input type="text" class="form-control" id="recipientAdditionalInfo" placeholder="Hospital/Additional Info">
+                    </div>
+                    <button type="submit" class="btn btn-success">Register Recipient</button>
+                  </form>
+                </div>
+              </div>
+            </div>
+
+            <!-- Recipient Actions -->
+            <div class="col-md-6">
+              <div class="card">
+                <div class="card-header">
+                  <h5>Recipient Actions</h5>
+                </div>
+                <div class="card-body">
+                  <!-- Get Recipient Info -->
+                  <div class="mb-3">
+                    <label for="getRecipientAddress" class="form-label">Get Recipient Info</label>
+                    <div class="input-group">
+                      <input type="text" class="form-control" id="getRecipientAddress" placeholder="Recipient address">
+                      <button class="btn btn-outline-secondary" type="button" id="getRecipientBtn">Get Info</button>
+                    </div>
+                  </div>
+
+                  <!-- Add to Waiting List -->
+                  <div class="mb-3">
+                    <label class="form-label">Add to Waiting List (Admin Only)</label>
+                    <div class="input-group mb-2">
+                      <input type="text" class="form-control" id="waitingListAddress" placeholder="Recipient address">
+                    </div>
+                    <div class="row mb-2">
+                      <div class="col-md-6">
+                        <select class="form-control" id="organTypeSelect">
+                          <option value="0">Heart</option>
+                          <option value="1">Liver</option>
+                          <option value="2">Kidneys</option>
+                        </select>
+                      </div>
+                      <div class="col-md-6">
+                        <input type="number" class="form-control" id="urgencyLevel" placeholder="Urgency Level" min="1" max="10">
+                      </div>
+                    </div>
+                    <button class="btn btn-info" type="button" id="addToWaitingListBtn">Add to Waiting List</button>
+                  </div>
+
+                  <!-- Update Medical Status -->
+                  <div class="mb-3">
+                    <label for="updateRecipientAddress" class="form-label">Update Medical Status (Admin Only)</label>
+                    <div class="input-group mb-2">
+                      <input type="text" class="form-control" id="updateRecipientAddress" placeholder="Recipient address">
+                    </div>
+                    <div class="input-group">
+                      <select class="form-control" id="medicalStatusSelect">
+                        <option value="0">Waiting</option>
+                        <option value="1">Transplanted</option>
+                        <option value="2">Critical</option>
+                        <option value="3">Stable</option>
+                        <option value="4">Rejected</option>
+                      </select>
+                      <button class="btn btn-warning" type="button" id="updateMedicalStatusBtn">Update Status</button>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!-- Recipient Info Display -->
+          <div class="row mt-4">
+            <div class="col-12">
+              <div id="recipientInfo" class="card" style="display: none;">
+                <div class="card-header">
+                  <h5>Recipient Information</h5>
+                </div>
+                <div class="card-body" id="recipientInfoContent">
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Hospital Section -->
+        <div class="tab-pane fade" id="hospital-section" role="tabpanel">
+          <div class="row">
+            <!-- Register Hospital Form -->
+            <div class="col-md-6">
+              <div class="card">
+                <div class="card-header">
+                  <h5>Register New Hospital (Owner Only)</h5>
+                </div>
+                <div class="card-body">
+                  <form id="hospitalForm">
+                    <div class="mb-3">
+                      <label for="hospitalAddress" class="form-label">Hospital Address</label>
+                      <input type="text" class="form-control" id="hospitalAddress" placeholder="0x..." required>
+                    </div>
+                    <div class="mb-3">
+                      <label for="hospitalName" class="form-label">Hospital Name</label>
+                      <input type="text" class="form-control" id="hospitalName" required>
+                    </div>
+                    <div class="mb-3">
+                      <label for="hospitalLocation" class="form-label">Location</label>
+                      <input type="text" class="form-control" id="hospitalLocation" placeholder="City, Country" required>
+                    </div>
+                    <div class="mb-3">
+                      <label for="hospitalLicenseId" class="form-label">License ID</label>
+                      <input type="text" class="form-control" id="hospitalLicenseId" placeholder="License/Registration Number" required>
+                    </div>
+                    <button type="submit" class="btn btn-primary">Register Hospital</button>
+                  </form>
+                </div>
+              </div>
+            </div>
+
+            <!-- Hospital Actions -->
+            <div class="col-md-6">
+              <div class="card">
+                <div class="card-header">
+                  <h5>Hospital Actions</h5>
+                </div>
+                <div class="card-body">
+                  <!-- Get Hospital Info -->
+                  <div class="mb-3">
+                    <label for="getHospitalAddress" class="form-label">Get Hospital Info</label>
+                    <div class="input-group">
+                      <input type="text" class="form-control" id="getHospitalAddress" placeholder="Hospital address">
+                      <button class="btn btn-outline-secondary" type="button" id="getHospitalBtn">Get Info</button>
+                    </div>
+                  </div>
+
+                  <!-- Verify Hospital -->
+                  <div class="mb-3">
+                    <label for="verifyHospitalAddress" class="form-label">Verify Hospital (Owner Only)</label>
+                    <div class="input-group mb-2">
+                      <input type="text" class="form-control" id="verifyHospitalAddress" placeholder="Hospital address">
+                    </div>
+                    <div class="input-group">
+                      <input type="text" class="form-control" id="hospitalCredentials" placeholder="Credentials (will be hashed)">
+                      <button class="btn btn-success" type="button" id="verifyHospitalBtn">Verify</button>
+                    </div>
+                  </div>
+
+                  <!-- Authorize Staff -->
+                  <div class="mb-3">
+                    <label class="form-label">Authorize Staff (Hospital Admin Only)</label>
+                    <div class="input-group mb-2">
+                      <input type="text" class="form-control" id="staffHospitalAddress" placeholder="Hospital address">
+                    </div>
+                    <div class="input-group mb-2">
+                      <input type="text" class="form-control" id="staffAddress" placeholder="Staff address">
+                    </div>
+                    <div class="input-group">
+                      <select class="form-control" id="staffRoleSelect">
+                        <option value="0">Admin</option>
+                        <option value="1">Surgeon</option>
+                        <option value="2">Coordinator</option>
+                        <option value="3">None (Remove)</option>
+                      </select>
+                      <button class="btn btn-info" type="button" id="authorizeStaffBtn">Authorize</button>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!-- Hospital Capacity Management -->
+          <div class="row mt-4">
+            <div class="col-md-6">
+              <div class="card">
+                <div class="card-header">
+                  <h5>Update Hospital Capacity</h5>
+                </div>
+                <div class="card-body">
+                  <div class="mb-3">
+                    <label for="capacityHospitalAddress" class="form-label">Hospital Address</label>
+                    <input type="text" class="form-control" id="capacityHospitalAddress" placeholder="Hospital address">
+                  </div>
+                  <div class="row mb-3">
+                    <div class="col-md-6">
+                      <label for="capacityOrganType" class="form-label">Organ Type</label>
+                      <select class="form-control" id="capacityOrganType">
+                        <option value="0">Heart</option>
+                        <option value="1">Liver</option>
+                        <option value="2">Kidneys</option>
+                      </select>
+                    </div>
+                    <div class="col-md-6">
+                      <label for="capacityAmount" class="form-label">Capacity</label>
+                      <input type="number" class="form-control" id="capacityAmount" placeholder="Number" min="0">
+                    </div>
+                  </div>
+                  <button class="btn btn-warning" type="button" id="updateCapacityBtn">Update Capacity</button>
+                </div>
+              </div>
+            </div>
+
+            <!-- Get Staff Role -->
+            <div class="col-md-6">
+              <div class="card">
+                <div class="card-header">
+                  <h5>Check Staff Role</h5>
+                </div>
+                <div class="card-body">
+                  <div class="mb-3">
+                    <label for="roleHospitalAddress" class="form-label">Hospital Address</label>
+                    <input type="text" class="form-control" id="roleHospitalAddress" placeholder="Hospital address">
+                  </div>
+                  <div class="mb-3">
+                    <label for="roleStaffAddress" class="form-label">Staff Address</label>
+                    <input type="text" class="form-control" id="roleStaffAddress" placeholder="Staff address">
+                  </div>
+                  <button class="btn btn-outline-secondary" type="button" id="getStaffRoleBtn">Get Role</button>
+                  <div id="staffRoleResult" class="mt-3" style="display: none;"></div>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!-- Hospital Info Display -->
+          <div class="row mt-4">
+            <div class="col-12">
+              <div id="hospitalInfo" class="card" style="display: none;">
+                <div class="card-header">
+                  <h5>Hospital Information</h5>
+                </div>
+                <div class="card-body" id="hospitalInfoContent">
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Organ NFT Section -->
+        <div class="tab-pane fade" id="organ-nft-section" role="tabpanel">
+          <div class="row">
+            <!-- Mint Organ NFT -->
+            <div class="col-md-6">
+              <div class="card">
+                <div class="card-header">
+                  <h5>Mint Organ NFT</h5>
+                </div>
+                <div class="card-body">
+                  <form id="mintOrganForm">
+                    <div class="mb-3">
+                      <label for="nftDonorAddress" class="form-label">Donor Address</label>
+                      <input type="text" class="form-control" id="nftDonorAddress" placeholder="0x..." required>
+                    </div>
+                    <div class="mb-3">
+                      <label for="nftOrganType" class="form-label">Organ Type</label>
+                      <select class="form-control" id="nftOrganType" required>
+                        <option value="">Select Organ Type</option>
+                        <option value="0">Heart</option>
+                        <option value="1">Liver</option>
+                        <option value="2">Kidneys</option>
+                      </select>
+                    </div>
+                    <div class="mb-3">
+                      <label for="nftBloodType" class="form-label">Blood Type</label>
+                      <select class="form-control" id="nftBloodType" required>
+                        <option value="">Select Blood Type</option>
+                        <option value="A+">A+</option>
+                        <option value="A-">A-</option>
+                        <option value="B+">B+</option>
+                        <option value="B-">B-</option>
+                        <option value="AB+">AB+</option>
+                        <option value="AB-">AB-</option>
+                        <option value="O+">O+</option>
+                        <option value="O-">O-</option>
+                      </select>
+                    </div>
+                    <div class="mb-3">
+                      <label for="nftMedicalDataHash" class="form-label">Medical Data Hash</label>
+                      <input type="text" class="form-control" id="nftMedicalDataHash" placeholder="IPFS hash" required>
+                    </div>
+                    <div class="mb-3">
+                      <label for="nftTokenUri" class="form-label">Token URI</label>
+                      <input type="text" class="form-control" id="nftTokenUri" placeholder="IPFS URI for metadata" required>
+                    </div>
+                    <button type="submit" class="btn btn-primary">Mint Organ NFT</button>
+                  </form>
+                </div>
+              </div>
+            </div>
+
+            <!-- NFT Actions -->
+            <div class="col-md-6">
+              <div class="card">
+                <div class="card-header">
+                  <h5>NFT Actions</h5>
+                </div>
+                <div class="card-body">
+                  <!-- Get Organ Metadata -->
+                  <div class="mb-3">
+                    <label for="getTokenId" class="form-label">Get Organ Metadata</label>
+                    <div class="input-group">
+                      <input type="number" class="form-control" id="getTokenId" placeholder="Token ID">
+                      <button class="btn btn-outline-secondary" type="button" id="getOrganMetadataBtn">Get Metadata</button>
+                    </div>
+                  </div>
+
+                  <!-- Match Organ -->
+                  <div class="mb-3">
+                    <label class="form-label">Match Organ (Authorized Only)</label>
+                    <div class="input-group mb-2">
+                      <input type="number" class="form-control" id="matchTokenId" placeholder="Token ID">
+                    </div>
+                    <div class="input-group mb-2">
+                      <input type="text" class="form-control" id="matchRecipientAddress" placeholder="Recipient address">
+                    </div>
+                    <div class="input-group">
+                      <input type="text" class="form-control" id="matchHospitalAddress" placeholder="Hospital address">
+                      <button class="btn btn-success" type="button" id="matchOrganBtn">Match Organ</button>
+                    </div>
+                  </div>
+
+                  <!-- Mark Transplanted -->
+                  <div class="mb-3">
+                    <label for="transplantTokenId" class="form-label">Mark Transplanted (Authorized Only)</label>
+                    <div class="input-group">
+                      <input type="number" class="form-control" id="transplantTokenId" placeholder="Token ID">
+                      <button class="btn btn-warning" type="button" id="markTransplantedBtn">Mark Transplanted</button>
+                    </div>
+                  </div>
+
+                  <!-- Set Emergency Status -->
+                  <div class="mb-3">
+                    <label class="form-label">Set Emergency Status</label>
+                    <div class="input-group mb-2">
+                      <input type="number" class="form-control" id="emergencyTokenId" placeholder="Token ID">
+                    </div>
+                    <div class="row mb-2">
+                      <div class="col-md-6">
+                        <select class="form-control" id="isEmergency">
+                          <option value="false">Normal</option>
+                          <option value="true">Emergency</option>
+                        </select>
+                      </div>
+                      <div class="col-md-6">
+                        <input type="number" class="form-control" id="urgencyLevelNFT" placeholder="Urgency (1-10)" min="1" max="10">
+                      </div>
+                    </div>
+                    <button class="btn btn-danger" type="button" id="setEmergencyBtn">Set Emergency Status</button>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!-- Additional NFT Actions -->
+          <div class="row mt-4">
+            <div class="col-md-6">
+              <div class="card">
+                <div class="card-header">
+                  <h5>Query Functions</h5>
+                </div>
+                <div class="card-body">
+                  <!-- Get Donor Organs -->
+                  <div class="mb-3">
+                    <label for="donorOrgansAddress" class="form-label">Get Donor's Organs</label>
+                    <div class="input-group">
+                      <input type="text" class="form-control" id="donorOrgansAddress" placeholder="Donor address">
+                      <button class="btn btn-outline-secondary" type="button" id="getDonorOrgansBtn">Get Organs</button>
+                    </div>
+                  </div>
+
+                  <!-- Get Available Organs -->
+                  <div class="mb-3">
+                    <label class="form-label">Get Available Organs</label>
+                    <div class="row mb-2">
+                      <div class="col-md-6">
+                        <select class="form-control" id="availableOrganType">
+                          <option value="0">Heart</option>
+                          <option value="1">Liver</option>
+                          <option value="2">Kidneys</option>
+                        </select>
+                      </div>
+                      <div class="col-md-6">
+                        <select class="form-control" id="availableBloodType">
+                          <option value="A+">A+</option>
+                          <option value="A-">A-</option>
+                          <option value="B+">B+</option>
+                          <option value="B-">B-</option>
+                          <option value="AB+">AB+</option>
+                          <option value="AB-">AB-</option>
+                          <option value="O+">O+</option>
+                          <option value="O-">O-</option>
+                        </select>
+                      </div>
+                    </div>
+                    <button class="btn btn-info" type="button" id="getAvailableOrgansBtn">Get Available Organs</button>
+                  </div>
+
+                  <!-- Get Total Organs -->
+                  <div class="mb-3">
+                    <button class="btn btn-outline-primary" type="button" id="getTotalOrgansBtn">Get Total Organs Count</button>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <div class="col-md-6">
+              <div class="card">
+                <div class="card-header">
+                  <h5>Admin Functions</h5>
+                </div>
+                <div class="card-body">
+                  <!-- Mark Expired -->
+                  <div class="mb-3">
+                    <label for="expiredTokenId" class="form-label">Mark Organ Expired</label>
+                    <div class="input-group">
+                      <input type="number" class="form-control" id="expiredTokenId" placeholder="Token ID">
+                      <button class="btn btn-danger" type="button" id="markExpiredBtn">Mark Expired</button>
+                    </div>
+                  </div>
+
+                  <!-- Set Contract Addresses -->
+                  <div class="mb-3">
+                    <label class="form-label">Set Contract Addresses (Owner Only)</label>
+                    <button class="btn btn-warning" type="button" id="setContractAddressesBtn">Set Contract Addresses</button>
+                    <small class="form-text text-muted">This will use the current contract addresses from the configuration.</small>
+                  </div>
+
+                  <!-- Update Organ Status -->
+                  <div class="mb-3">
+                    <label class="form-label">Update Organ Status</label>
+                    <div class="input-group mb-2">
+                      <input type="number" class="form-control" id="updateStatusTokenId" placeholder="Token ID">
+                    </div>
+                    <div class="input-group">
+                      <select class="form-control" id="newOrganStatus">
+                        <option value="0">Available</option>
+                        <option value="1">Matched</option>
+                        <option value="2">Transplanted</option>
+                        <option value="3">Expired</option>
+                        <option value="4">Rejected</option>
+                      </select>
+                      <button class="btn btn-warning" type="button" id="updateOrganStatusBtn">Update Status</button>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!-- NFT Info Display -->
+          <div class="row mt-4">
+            <div class="col-12">
+              <div id="organNFTInfo" class="card" style="display: none;">
+                <div class="card-header">
+                  <h5>Organ NFT Information</h5>
+                </div>
+                <div class="card-body" id="organNFTInfoContent">
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!-- Query Results Display -->
+          <div class="row mt-4">
+            <div class="col-12">
+              <div id="queryResults" class="card" style="display: none;">
+                <div class="card-header">
+                  <h5>Query Results</h5>
+                </div>
+                <div class="card-body" id="queryResultsContent">
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Organ Quality Section -->
+        <div class="tab-pane fade" id="organ-quality-section" role="tabpanel">
+          <div class="row">
+            <!-- Update Medical Data -->
+            <div class="col-md-6">
+              <div class="card">
+                <div class="card-header">
+                  <h5>Update Medical Data</h5>
+                </div>
+                <div class="card-body">
+                  <form id="updateMedicalDataForm">
+                    <div class="mb-3">
+                      <label for="medicalTokenId" class="form-label">Token ID</label>
+                      <input type="number" class="form-control" id="medicalTokenId" placeholder="Organ NFT Token ID" required>
+                    </div>
+                    <div class="mb-3">
+                      <label for="medicalIpfsHash" class="form-label">IPFS Hash</label>
+                      <input type="text" class="form-control" id="medicalIpfsHash" placeholder="IPFS hash of medical data" required>
+                    </div>
+                    <button type="submit" class="btn btn-primary">Update Medical Data</button>
+                  </form>
+                </div>
+              </div>
+            </div>
+
+            <!-- Add Test Results -->
+            <div class="col-md-6">
+              <div class="card">
+                <div class="card-header">
+                  <h5>Add Test Results</h5>
+                </div>
+                <div class="card-body">
+                  <div class="mb-3">
+                    <label for="testTokenId" class="form-label">Token ID</label>
+                    <input type="number" class="form-control" id="testTokenId" placeholder="Organ NFT Token ID">
+                  </div>
+                  <div class="mb-3">
+                    <label for="testType" class="form-label">Test Type</label>
+                    <select class="form-control" id="testType">
+                      <option value="">Select Test Type</option>
+                      <option value="HLA Typing">HLA Typing</option>
+                      <option value="Viral Screening">Viral Screening</option>
+                      <option value="Blood Chemistry">Blood Chemistry</option>
+                      <option value="Tissue Compatibility">Tissue Compatibility</option>
+                      <option value="Organ Function">Organ Function</option>
+                      <option value="Other">Other</option>
+                    </select>
+                  </div>
+                  <div class="mb-3">
+                    <label for="testResultHash" class="form-label">Test Result Hash</label>
+                    <input type="text" class="form-control" id="testResultHash" placeholder="IPFS hash of test results">
+                  </div>
+                  <button class="btn btn-success" type="button" id="addTestResultBtn">Add Test Result</button>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!-- Quality Management Actions -->
+          <div class="row mt-4">
+            <div class="col-md-6">
+              <div class="card">
+                <div class="card-header">
+                  <h5>Quality Validation</h5>
+                </div>
+                <div class="card-body">
+                  <!-- Validate Organ Quality -->
+                  <div class="mb-3">
+                    <label for="validateTokenId" class="form-label">Validate Organ Quality</label>
+                    <div class="input-group">
+                      <input type="number" class="form-control" id="validateTokenId" placeholder="Token ID">
+                      <button class="btn btn-success" type="button" id="validateQualityBtn">Validate Quality</button>
+                    </div>
+                  </div>
+
+                  <!-- Get Medical Data -->
+                  <div class="mb-3">
+                    <label for="getMedicalTokenId" class="form-label">Get Medical Data</label>
+                    <div class="input-group">
+                      <input type="number" class="form-control" id="getMedicalTokenId" placeholder="Token ID">
+                      <button class="btn btn-outline-secondary" type="button" id="getMedicalDataBtn">Get Medical Data</button>
+                    </div>
+                  </div>
+
+                  <!-- Get Test Results -->
+                  <div class="mb-3">
+                    <label for="getTestTokenId" class="form-label">Get Test Results</label>
+                    <div class="input-group">
+                      <input type="number" class="form-control" id="getTestTokenId" placeholder="Token ID">
+                      <button class="btn btn-outline-secondary" type="button" id="getTestResultsBtn">Get Test Results</button>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <!-- Compatibility Check -->
+            <div class="col-md-6">
+              <div class="card">
+                <div class="card-header">
+                  <h5>Compatibility Check</h5>
+                </div>
+                <div class="card-body">
+                  <div class="mb-3">
+                    <label for="compatTokenId" class="form-label">Token ID</label>
+                    <input type="number" class="form-control" id="compatTokenId" placeholder="Organ NFT Token ID">
+                  </div>
+                  <div class="mb-3">
+                    <label for="compatRecipientAddress" class="form-label">Recipient Address</label>
+                    <input type="text" class="form-control" id="compatRecipientAddress" placeholder="0x...">
+                  </div>
+                  <button class="btn btn-info" type="button" id="checkCompatibilityBtn">Check Compatibility</button>
+                  
+                  <!-- Compatibility Result -->
+                  <div id="compatibilityResult" class="mt-3" style="display: none;">
+                    <div class="alert" id="compatibilityAlert">
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!-- Quality Info Display -->
+          <div class="row mt-4">
+            <div class="col-12">
+              <div id="qualityInfo" class="card" style="display: none;">
+                <div class="card-header">
+                  <h5>Organ Quality Information</h5>
+                </div>
+                <div class="card-body" id="qualityInfoContent">
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.3.0/js/bootstrap.bundle.min.js"></script>
+    <script type="module" src="index.js"></script>
+  </body>
+</html>

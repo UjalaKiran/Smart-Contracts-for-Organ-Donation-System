@@ -1,0 +1,20 @@
+{
+  "name": "client",
+  "version": "1.0.0",
+  "description": "",
+  "scripts": {
+    "start": "parcel index.html"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "type": "commonjs",
+  "devDependencies": {
+    "parcel": "^2.15.4"
+  },
+  "dependencies": {
+    "bootstrap": "^5.3.8",
+    "web3": "^4.16.0"
+  }
+}
+
